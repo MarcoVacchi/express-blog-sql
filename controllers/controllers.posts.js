@@ -11,6 +11,16 @@ function index(req, res) {
   })
 };
 
+function destroy(req, res) {
+  // recuperiamo l'id dall' URL
+  const { id } = req.params;
+  //Eliminiamo la pizza dal menu
+  posts.query('DELETE FROM posts WHERE id = ?', [id], (err) => {
+    if (err) return res.status(500).json({ error: 'Failed to delete pizza' });
+    res.sendStatus(204)
+  });
+}
+
 function show(req, res) {
 
   const currentId = Number(req.params.id);
@@ -25,23 +35,23 @@ function show(req, res) {
 };
 
 
-function destroy(req, res) {
-  const currentId = Number(req.params.id);
+// function destroy(req, res) {
+//   const currentId = Number(req.params.id);
 
-  const currentPost = posts.findIndex(posts => posts.id === currentId);
+//   const currentPost = posts.findIndex(posts => posts.id === currentId);
 
-  if (currentPost !== -1) {
-    posts.splice(currentPost, 1)
-    res.status(204).json()
-    console.log(posts);
-  } else {
-    res.status(404).json({
-      error: "Id non trovato",
-      message: "Inserisci un Id valido!"
-    })
-  }
+//   if (currentPost !== -1) {
+//     posts.splice(currentPost, 1)
+//     res.status(204).json()
+//     console.log(posts);
+//   } else {
+//     res.status(404).json({
+//       error: "Id non trovato",
+//       message: "Inserisci un Id valido!"
+//     })
+//   }
 
-};
+// };
 
 // function index(req, res) {
 // // ciao();
