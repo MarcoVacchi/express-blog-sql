@@ -27,3 +27,28 @@ Bonus
 - Implementare un filtro di ricerca nella index che mostri solo i post che hanno un determinato Tag
 
 - In Show e Destroy, controllare se il parametro si riferisce ad un post esistente, in caso contrario, rispondere con uno stato 404 e un messaggio d’errore, sempre in formato JSON.
+
+
+
+Prendiamo le API precedentemente create per il vostro blog ed aggiungiamo la persistenza tramite la connessione a un DB
+Milestone 1
+- Importiamo il db in allegato su MySQL Workbench
+- Installiamo il client *mysql2* con npm i mysql2 nell’app Express
+- Creiamo un file di configurazione per connettere il database
+- Inseriamo un console.log nella logica di connessione e proviamo ad avviare l’applicazione per verificare che non ci siano errori.
+
+
+Milestone 2
+- Facciamo sì che l’API di INDEX restituisca la lista di post recuperata dal database in formato JSON
+- Verifichiamo su Postman che la risposta sia corretta
+
+
+Milestone 3
+- Facciamo sì che l’API di DESTROY permetta di eliminare un post dal database
+- Verifichiamo su Postman che la chiamata non dia errore e risponda 204
+- Verifichiamo su MySQL Workbench che il post venga effettivamente rimosso
+
+
+Milestone 4
+- Facciamo sì che l’API di SHOW restituisca il post desiderato in formato JSON
+- Verifichiamo su Postman che la risposta sia corretta
