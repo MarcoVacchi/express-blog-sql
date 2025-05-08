@@ -1,36 +1,65 @@
-// Importiamo il file di connessione al database
 const posts = require('../data/blog');
-// Index
+
+// GET;
+
 function index(req, res) {
-  // prepariamo la query
   const sql = 'SELECT * FROM posts';
-  // eseguiamo la query!
   posts.query(sql, (err, results) => {
     if (err) return res.status(500).json({ error: 'Database query failed' });
     res.json(results);
   })
 };
 
+// DELETE;
+
 function destroy(req, res) {
-  // recuperiamo l'id dall' URL
   const { id } = req.params;
-  //Eliminiamo la pizza dal menu
   posts.query('DELETE FROM posts WHERE id = ?', [id], (err) => {
-    if (err) return res.status(500).json({ error: 'Failed to delete pizza' });
+    if (err) return res.status(500).json({ error: 'Failed to delete post' });
     res.sendStatus(204)
   })
 };
 
+// function show(req, res) {
+//   // recuperiamo l'id dall' URL
+//   const id = req.params.id
+//   const sql = 'SELECT * FROM posts WHERE id = ?';
+//   posts.query(sql, [id], (err, results) => {
+//     if (err) return res.status(500).json({ error: 'Database query failed' });
+//     if (results.length === 0) return res.status(404).json({ error: 'Post not found' });
+//     res.json(results[0]);
+//   });
+// };
+
+// BONUS SHOW;
+
 function show(req, res) {
-  // recuperiamo l'id dall' URL
-  const id = req.params.id
+  const id = req.params.id;
   const sql = 'SELECT * FROM posts WHERE id = ?';
   posts.query(sql, [id], (err, results) => {
     if (err) return res.status(500).json({ error: 'Database query failed' });
-    if (results.length === 0) return res.status(404).json({ error: 'Pizza not found' });
-    res.json(results[0]);
+    if (results.length === 0) return res.status(404).json({ error: 'Post non trovato' });
+
+    const post = results[0];
+
+    const tagSql = `
+   SELECT 
+   *
+    FROM
+      tags
+          JOIN
+      post_tag ON tags.id = post_tag.tag_id
+    WHERE
+      post_tag.post_id = ?`;
+
+    posts.query(tagSql, [id], (err, tagResults) => {
+      if (err) return res.status(500).json({ error: 'Errore nel recupero dei tag' });
+
+      post.tags = tagResults;
+      res.json(post);
+    });
   });
-}
+};
 
 // function show(req, res) {
 
